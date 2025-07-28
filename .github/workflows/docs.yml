@@ -1,44 +1,25 @@
----
-name: Docs 📚
-
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "inst/templates/**"
-      - "_pkgdown.*"
-      - DESCRIPTION
-      - "**.md"
-      - "**.Rmd"
-      - "man/**"
-      - "LICENSE.*"
-      - NAMESPACE
-  pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
-      - ready_for_review
-    branches:
-      - main
-    paths:
-      - "inst/templates/**"
-      - "_pkgdown.*"
-      - DESCRIPTION
-      - "**.md"
-      - "**.Rmd"
-      - "man/**"
-      - "LICENSE.*"
-      - NAMESPACE
-  workflow_dispatch:
+  workflow_call:
 
 jobs:
   docs:
-    name: Pkgdown Docs 📚
-    uses: insightsengineering/r.pkg.template/.github/workflows/pkgdown.yaml@main
-    secrets:
-      REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    with:
-      default-landing-page: latest-tag
-      additional-unit-test-report-directories: unit-test-report-non-cran
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+
+      - name: Install pkgdown
+        run: |
+          R -e 'install.packages("pkgdown")'
+
+      - name: Build documentation site
+        run: |
+          R -e 'pkgdown::build_site()'
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
