@@ -187,3 +187,4 @@ Don't commit common R artifacts......................(no files to check)Skipped
 
 [![Forkers repo roster for @insightsengineering/coursera.cicd.lab](https://reporoster.com/forks/insightsengineering/coursera.cicd.lab)](https://github.com/insightsengineering/coursera.cicd.lab/network/members)
 # Trigger docs workflow
+# Trigger docs workflow
